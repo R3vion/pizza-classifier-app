@@ -3,7 +3,7 @@ import numpy as np
 import tensorflow as tf
 from tensorflow.keras.models import load_model
 from PIL import Image
-# import cv2
+import cv2
 import tempfile
 import os
 import gdown
@@ -36,9 +36,14 @@ if uploaded is not None:
     st.image(image, caption='Uploaded Image', use_column_width=True)
 
     # Convert to OpenCV format
+    # img = np.array(image.convert('RGB'))
+    # img.resize(img_size)
+    # img = img / 255.0
+
     img = np.array(image.convert('RGB'))
-    img = img.resize(img_size)
-    img = np.array(img) / 255.0
+    img = cv2.resize(img, img_size)
+    img = img / 255.0
+
 
     # Predict
     pred = model.predict(np.expand_dims(img, axis=0))[0]
